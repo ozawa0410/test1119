@@ -21,7 +21,8 @@
   $imagefile = fopen($imageId.".jpeg", "w+") or die("Unable to open file!");
   fwrite($imagefile, $json_content); 
   fclose($imagefile); //將圖片存在server上
- $header[] = "Content-Type: application/json";
+			
+  $header[] = "Content-Type: application/json";
   $post_data = array (
 	"requests" => array (
 	  array (
@@ -39,14 +40,12 @@
 	  )
 	)
   );
-fwrite($myfile, "\xEF\xBB\xBF"."hellohello".json_encode($post_data))
   $ch = curl_init('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCiyGiCfjzzPR1JS8PrAxcsQWHdbycVwmg');                                                                      
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));                                                                  
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
   curl_setopt($ch, CURLOPT_HTTPHEADER, $header);                                                                                                   
   $result = json_decode(curl_exec($ch));
-fwrite($myfile, "\xEF\xBB\xBF"."hellohello".($result -> responses[0] -> fullTextAnnotation -> text)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $result_ary = mb_split("\n",$result -> responses[0] -> fullTextAnnotation -> text);
   $ans_txt = "這張發票沒用了，你又製造了一張垃圾";
   foreach ($result_ary as $val) {
@@ -59,8 +58,8 @@ fwrite($myfile, "\xEF\xBB\xBF"."hellohello".($result -> responses[0] -> fullText
 	"messages" => array (
 	  array (
 		"type" => "text",
-		//"text" => $ans_txt
-		"text" => $result //-> responses[0] -> fullTextAnnotation -> text
+		"text" => $ans_txt
+		//"text" => $result -> responses[0] -> fullTextAnnotation -> text
 	  )
 	)
   );
@@ -76,5 +75,4 @@ fwrite($myfile, "\xEF\xBB\xBF"."hellohello".($result -> responses[0] -> fullText
   curl_setopt($ch, CURLOPT_HTTPHEADER, $header);                                                                                                   
   $result = curl_exec($ch);
   curl_close($ch);
-
 ?>
