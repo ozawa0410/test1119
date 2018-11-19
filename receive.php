@@ -57,8 +57,8 @@
 	"messages" => array (
 	  array (
 		"type" => "text",
-		//"text" => $ans_txt
-		"text" => $result -> responses[0] -> fullTextAnnotation -> text
+		"text" => $ans_txt
+		//"text" => $result -> responses[0] -> fullTextAnnotation -> text
 	  )
 	)
   );
@@ -66,7 +66,7 @@
   
   fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $header[] = "Content-Type: application/json";
-  $header[] = "Authorization: Bearer gd1gyH+Pc5TROu9ku5u/5tDvFnffsU8nXU69zXuhTgE0dIS5nVGmx9Js8PwijeUqgFuwWXzyJ14/N5FUmp/UXsmSJbUsxMGA6AW1gozlf6cbEgSGLiC02BEaRa5wUSqE7df8FOANP1WjPW8Mh/TgtwdB04t89/1O/w1cDnyilFU=";
+  $header[] = "Authorization: Bearer HPMiM742ogDNdBapMb1Q86uu5Gzvwmxn/jCjsDXWpDVPzycJdJZHYrPid25v4uwFkGk0nEwCm4SvTkmpj47Mtz6921ViVNfjSLyuJbNeaG5oTCdnrnIG2Q+d/FOp1YZKnvKop0lAl47F7V8yHz19HwdB04t89/1O/w1cDnyilFU=";
   $ch = curl_init("https://api.line.me/v2/bot/message/reply");
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($response));                                                                  
