@@ -40,7 +40,7 @@
 	)
   );
 fwrite($myfile, "\xEF\xBB\xBF"."hellohello".json_encode($post_data))
-  $ch = curl_init('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyD8bv6pDMsDjm2VxdT9kCCOWUQsELMmrf8');                                                                      
+  $ch = curl_init('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCiyGiCfjzzPR1JS8PrAxcsQWHdbycVwmg');                                                                      
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));                                                                  
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
