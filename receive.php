@@ -60,7 +60,7 @@ fwrite($myfile, "\xEF\xBB\xBF"."hellohello".($result -> responses[0] -> fullText
 	  array (
 		"type" => "text",
 		//"text" => $ans_txt
-		"text" => $result -> responses[0] -> fullTextAnnotation -> text
+		"text" => $result //-> responses[0] -> fullTextAnnotation -> text
 	  )
 	)
   );
