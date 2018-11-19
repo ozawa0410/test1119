@@ -9,82 +9,30 @@
   $sender_txt = $json_obj->events[0]->message->text; //取得訊息內容
   $sender_replyToken = $json_obj->events[0]->replyToken; //取得訊息的replyToken
   
-  switch ($sender_txt) {
-    case "push":
-			$response = array (
-				"replyToken" => $sender_replyToken,
-				"messages" => array (
-					array (
-						"type" => "text",
-						"text" => "Hello. This is push. You say ".$sender_txt
-					)
-				)
-			);
-      break;
-    case "location":
-			$line_server_url = 'https://api.line.me/v2/bot/message/reply';
-			$response = array (
-				"replyToken" => $sender_replyToken,
-				"messages" => array (
-					array (
-						"type" => "location",
-						"title" => "my location",
-						"address" => "〒150-0002 東京都渋谷区渋谷２丁目２１−１",
-						"latitude" => 35.65910807942215,
-						"longitude" => 139.70372892916203
-					)
-				)
-			);
-			break;
-		case "sticker":
-			$line_server_url = 'https://api.line.me/v2/bot/message/reply';
-			$response = array (
-				"replyToken" => $sender_replyToken,
-				"messages" => array (
-					array (
-						"type" => "sticker",
-						"packageId" => "1",
-						"stickerId" => "1"
-					)
-				)
-			);
-			break;
-		case "button":
-			$line_server_url = 'https://api.line.me/v2/bot/message/reply';
-			$response = array (
-				"replyToken" => $sender_replyToken,
-				"messages" => array (
-					array (
-						"type" => "template",
-						"altText" => "this is a buttons template",
-						"template" => array (
-							"type" => "buttons",
-							"thumbnailImageUrl" => "https://www.w3schools.com/css/paris.jpg",
-							"title" => "Menu",
-							"text" => "Please select",
-							"actions" => array (
-								array (
-									"type" => "postback",
-									"label" => "Buy",
-									"data" => "action=buy&itemid=123"
-								),
-								array (
-									"type" => "postback",
-									"label" => "Add to cart",
-									"data" => "action=add&itemid=123"
-								)
-							)
-						)
-					)
-				)
-			);
-			break;
-  }
-  fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
+  $sender_txt=rawurlencode($sender_txt); //因為使用get的方式呼叫luis api，所以需要轉碼
+  $ch = curl_init('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/8c029d7e-3e01-4419-a977-e6ce87c2f02f?subscription-key=6a197cdbc89b4686be75abddce18e966&timezoneOffset=-360&q='.$sender_txt);                                                                      
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                          
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  $result_str = curl_exec($ch);
+  fwrite($myfile, "\xEF\xBB\xBF".$result_str); //在字串前加上\xEF\xBB\xBF轉成utf8格式
+  $result = json_decode($result_str);
+  $ans_txt = $result -> topScoringIntent -> intent;
+  $response = array (
+    "to" => $sender_userid,
+    "messages" => array (
+      array (
+        "type" => "text",
+        "text" => $ans_txt
+      )
+    )
+  );
+  
+  
+ fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $header[] = "Content-Type: application/json";
   $header[] = "Authorization: Bearer nXAn0wws02PzAm9L1033fZsO6tBldZxIJOENlYfadQnE1sUsXxCmDgzeZIAGbwbwkGk0nEwCm4SvTkmpj47Mtz6921ViVNfjSLyuJbNeaG7efg8EWv4kwg0q4Pf2TRpghBuvA4U5l0/CdP/99KL/MgdB04t89/1O/w1cDnyilFU=
 ";
-  $ch = curl_init("https://api.line.me/v2/bot/message/reply");
+  $ch = curl_init("https://api.line.me/v2/bot/message/push");
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($response));                                                                  
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
