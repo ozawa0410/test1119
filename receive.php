@@ -7,9 +7,10 @@
   
   $sender_userid = $json_obj->events[0]->source->userId; //取得訊息發送者的id
   $sender_txt = $json_obj->events[0]->message->text; //取得訊息內容
+  $sender_replyToken = $json_obj->events[0]->replyToken; //取得訊息的replyToken
   
   $response = array (
-    "to" => $sender_userid,
+    "replyToken" => $sender_replyToken,
     "messages" => array (
       array (
         "type" => "text",
@@ -21,7 +22,7 @@
  fwrite($myfile, "\xEF\xBB\xBF".json_encode($response)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $header[] = "Content-Type: application/json";
   $header[] = "Authorization: Bearer nXAn0wws02PzAm9L1033fZsO6tBldZxIJOENlYfadQnE1sUsXxCmDgzeZIAGbwbwkGk0nEwCm4SvTkmpj47Mtz6921ViVNfjSLyuJbNeaG7efg8EWv4kwg0q4Pf2TRpghBuvA4U5l0/CdP/99KL/MgdB04t89/1O/w1cDnyilFU=";
-  $ch = curl_init("https://api.line.me/v2/bot/message/push");
+  $ch = curl_init("https://api.line.me/v2/bot/message/reply");
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($response));                                                                  
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
