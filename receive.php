@@ -21,3 +21,4 @@
   $imagefile = fopen($imageId.".jpeg", "w+") or die("Unable to open file!");
   fwrite($imagefile, $json_content); 
   fclose($imagefile); //將圖片存在server上
+?>
