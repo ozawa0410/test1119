@@ -45,7 +45,7 @@
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
   curl_setopt($ch, CURLOPT_HTTPHEADER, $header);                                                                                                   
   $result = json_decode(curl_exec($ch));
-fwrite($myfile, "\xEF\xBB\xBF".($result -> responses[0] -> fullTextAnnotation -> text)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
+fwrite($myfile, "\xEF\xBB\xBF"."hellohello".($result -> responses[0] -> fullTextAnnotation -> text)); //在字串前面加上\xEF\xBB\xBF轉成utf8格式
   $result_ary = mb_split("\n",$result -> responses[0] -> fullTextAnnotation -> text);
   $ans_txt = "這張發票沒用了，你又製造了一張垃圾";
   foreach ($result_ary as $val) {
